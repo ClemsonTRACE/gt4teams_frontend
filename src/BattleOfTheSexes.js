@@ -1,14 +1,41 @@
 import React, { Component } from 'react';
 import M from 'materialize-css';
+import axios from "axios";
 
 class BoS extends Component {
 
 	constructor(props) {
 		super(props);
+		this.state = {
+			"history": {
+				0: [0, 0],
+				1: [0, 0],
+				2: [0, 0]
+			}
+		}
 	}
 
 	componentDidMount() {
 		M.AutoInit();
+	}
+
+	nice() {
+		alert("hello")
+		let ob = {
+			"gameState": {
+				"0": [2, 1], "1": [2, 1], "2": [2, 1]
+			},
+			"move": 1
+		}
+		let newOb = JSON.stringify(ob)
+		// console.log(newOb, typeof(newOb))
+		axios.post("http://localhost:8000/games/twoByTwo/pd/ppo", ob)
+		.then(function (response) {
+			console.log(response);
+		})
+		.catch(function (error) {
+			console.log(error);
+		});
 	}
 
 	render() {
@@ -41,7 +68,7 @@ class BoS extends Component {
 						<button className='btn' type="submit" name="move" value="opera">Opera</button>
 					</div>
 					<div className="col l2">
-						<button className='btn' type="submit" name="move" value="game">Game</button>
+						<button className='btn' type="submit" name="move" value="game" onClick={ this.nice.bind(this) } >Game</button>
 					</div>
 					<div className="col l4"></div>
 				</div>
