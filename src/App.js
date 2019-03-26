@@ -20,7 +20,7 @@ class App extends Component {
   render() {
     let simpleGames = ["bos", "pd", "hawkdove"]
     let options = ["ai", "human"]
-    let models = ["ppo", "vpg"]
+    let models = ["ppo", "vpg", "dqn"]
     let paths = []
     simpleGames.map((game) => {
       options.map((option) => {

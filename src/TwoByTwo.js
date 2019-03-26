@@ -34,16 +34,16 @@ const config = {
 						<tbody>
 							<tr>
 								<td></td>
-								<td>You Cooperate</td>
-								<td>You Defect</td>
+								<td>They Cooperate</td>
+								<td>They Defect</td>
 							</tr>
 							<tr>
-								<td>They Cooperate</td>
+								<td>You Cooperate</td>
 								<td>-1, -1</td>
 								<td>-3, 0</td>
 							</tr>
 							<tr>
-								<td>They Defect</td>
+								<td>You Defect</td>
 								<td>0, -3</td>
 								<td>-2, -2</td>
 							</tr>
