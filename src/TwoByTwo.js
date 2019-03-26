@@ -114,7 +114,7 @@ class TwoByTwo extends Component {
 		let newOb = JSON.stringify(ob)
 
 		let self = this		
-		axios.post("http://localhost:8000/games/twoByTwo/bos/ppo", ob)
+		axios.post("http://localhost:8000/games/twoByTwo/bos/vpg", ob)
 		.then(function (response) {
 			console.log(response["data"])
 			self.setState(response["data"])
