@@ -149,35 +149,42 @@ class TwoByTwo extends Component {
 	}
 
 	winRatio() {
-		let scores = Object.values(this.state.payoffs[this.state.epoch])
+		let epochs = Object.keys(this.state.payoffs)
+		let components = []
+		for (let epoch = 0; epoch < this.state.epoch; epoch++) {
+			let payoffs = Object.values(this.state.payoffs[epoch])
+			let AI_score = 0
+			let human_score = 0
+			let message = ""
+			payoffs.map((payoff) => {
+				AI_score += payoff[0]
+				human_score += payoff[1]
+			})
 
-		let AI_score = 0
-		let human_score = 0
+			if (AI_score > human_score) {
+				message = <h5>{ this.props.opponent } won Game #{ Number(epoch) + 1} : { AI_score } vs { human_score }</h5>
+			} else if (human_score > AI_score) {
+				message = <h5>You won Game #{ Number(epoch) + 1}: { human_score } vs { AI_score }</h5>
+			} else {
+				message = <h5>Game #{ Number(epoch) + 1} ended in a Tie: { human_score } vs { AI_score }</h5>
+			}
 
-		scores.map((scorePair) => {
-			AI_score += scorePair[0]
-			human_score += scorePair[1]
-		})
+			components.push(message)
+		}
 
-		console.log("payoffs", AI_score, human_score)
-
-		return <div className="col l8">
-			<div className="col l3">
-				<h4 className='center-align'>{ this.props.opponent } = { AI_score } </h4>
-			</div>
-			<div className="col l2"></div>
-			<div className="col l3">
-				<h4 className='center-align'>You = { human_score } </h4>
-			</div>
-		</div>
+		return components
 	}
 
 	render() {
+		this.winRatio()
 		if (this.state.status == false) {
 			return(
 				<div className='container'>
 					<div className="row">
 						<h2 className="center-align">{ config[this.props.game]["gameName"] }</h2>
+					</div>
+					<div className="row">
+						{ this.winRatio() }
 					</div>
 					<div className="row">
 						<div className="col l2"></div>
