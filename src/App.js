@@ -26,7 +26,7 @@ class App extends Component {
       options.map((option) => {
         models.map((model) => {
           let url = "/" + game + "/" + option + "/" + model
-          let opponent = (option == "ai") ? "Riley" : "AI"
+          let opponent = (option == "human") ? "Riley" : "AI"
           let component = <Route path={ url } component={ () => <TwoByTwo game={ game } opponent={ opponent } model={ model } /> } />
           paths.push(component)
         })
