@@ -4,6 +4,7 @@ import axios from "axios";
 
 const config = {
 	"bos": {
+		"gameName": "Battle of the Sexes",
 		"moves": ["Opera", "Game"],
 		"table": [<table>
 							<tbody>
@@ -24,10 +25,58 @@ const config = {
 								</tr>
 							</tbody>
 						</table>
-						]
+						]	
+	},
+	"pd": {
+		"gameName": "Prisoners Dilemma",
+		"moves": ["Cooperate", "Defect"],
+		"table": [<table>
+						<tbody>
+							<tr>
+								<td></td>
+								<td>You Cooperate</td>
+								<td>You Defect</td>
+							</tr>
+							<tr>
+								<td>They Cooperate</td>
+								<td>-1, -1</td>
+								<td>-3, 0</td>
+							</tr>
+							<tr>
+								<td>They Defect</td>
+								<td>0, -3</td>
+								<td>-2, -2</td>
+							</tr>
+						</tbody>
+					</table>
+						]	
+	},
+	"hawkdove": {
+		"gameName": "Hawk Dove",
+		"moves": ["Attack", "Peaceful"],
+		"table": [<table>
+						<tbody>
+							<tr>
+								<td></td>
+								<td>They Attack</td>
+								<td>They Stay Peaceful</td>
+							</tr>
+							<tr>
+								<td>You Attack</td>
+								<td>-2, -2</td>
+								<td>1, -1</td>
+							</tr>
+							<tr>
+								<td>You Stay Peaceful</td>
+								<td>-1, 1</td>
+								<td>0, 0</td>
+							</tr>
+						</tbody>
+					</table>
+						]	
 	}
 }
-class BoS extends Component {
+class TwoByTwo extends Component {
 
 	constructor(props) {
 		super(props);
@@ -89,7 +138,7 @@ class BoS extends Component {
 
 		return <div className="col l8">
 			<div className="col l3">
-				<h4 className='center-align'>Riley = { AI_score } </h4>
+				<h4 className='center-align'>{ this.props.opponent } = { AI_score } </h4>
 			</div>
 			<div className="col l2"></div>
 			<div className="col l3">
@@ -113,7 +162,7 @@ class BoS extends Component {
 
 		return <div className="col l8">
 			<div className="col l3">
-				<h4 className='center-align'>Riley = { AI_score } </h4>
+				<h4 className='center-align'>{ this.props.opponent } = { AI_score } </h4>
 			</div>
 			<div className="col l2"></div>
 			<div className="col l3">
@@ -126,6 +175,9 @@ class BoS extends Component {
 		if (this.state.status == false) {
 			return(
 				<div className='container'>
+					<div className="row">
+						<h2 className="center-align">{ config[this.props.game]["gameName"] }</h2>
+					</div>
 					<div className="row">
 						<div className="col l2"></div>
 						<div className="col l3 ">
@@ -145,33 +197,15 @@ class BoS extends Component {
 						<div className="col l2"></div>
 					</div>
 					<div className="row">
-						<table>
-							<tbody>
-								<tr>
-									<td></td>
-									<td>They go to the Opera</td>
-									<td>They go to the Game</td>
-								</tr>
-								<tr>
-									<td>You go to the Opera</td>
-									<td>3, 2</td>
-									<td>1, 1</td>
-								</tr>
-								<tr>
-									<td>You go to the Game</td>
-									<td>0, 0</td>
-									<td>2, 3</td>
-								</tr>
-							</tbody>
-						</table>
+						{ config[this.props.game]["table"] }
 					</div>
 					<div className="row">
 						<div className="col l4"></div>
 						<div className="col l2">
-							<button className='btn' type="submit" name="move" value="opera" onClick={ this.nice.bind(this, 1) }>Opera</button>
+							<button className='btn' type="submit" onClick={ this.nice.bind(this, 1) }> { config[this.props.game]["moves"][0] }</button>
 						</div>
 						<div className="col l2">
-							<button className='btn' type="submit" name="move" value="game" onClick={ this.nice.bind(this, 0) } >Game</button>
+							<button className='btn' type="submit" onClick={ this.nice.bind(this, 0) } >{ config[this.props.game]["moves"][1] }</button>
 						</div>
 						<div className="col l4"></div>
 					</div>
@@ -186,4 +220,4 @@ class BoS extends Component {
 	}
 }
 
-export default BoS
+export default TwoByTwo
