@@ -21,8 +21,7 @@ class App extends Component {
 
   render() {
     return (
-      <Router basename={process.env.PUBLIC_URL}>
-        <Link to="/bos/" className="center-align">Battle of the Sexes</Link>
+      <Router>
         <div className="row" style={{ display: "flex" }}>
           <div className="col s11 m10 l11" style={{ flex: 1 }}>
             <Route path="/pd" exact component={ () => <div className="row"><h2 className="center-align">Iterative Prisoners Dilemma</h2><PD /></div> } />
