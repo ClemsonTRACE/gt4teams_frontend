@@ -2,6 +2,31 @@ import React, { Component } from 'react';
 import M from 'materialize-css';
 import axios from "axios";
 
+const config = {
+	"bos": {
+		"moves": ["Opera", "Game"],
+		"table": [<table>
+							<tbody>
+								<tr>
+									<td></td>
+									<td>They go to the Opera</td>
+									<td>They go to the Game</td>
+								</tr>
+								<tr>
+									<td>You go to the Opera</td>
+									<td>3, 2</td>
+									<td>1, 1</td>
+								</tr>
+								<tr>
+									<td>You go to the Game</td>
+									<td>0, 0</td>
+									<td>2, 3</td>
+								</tr>
+							</tbody>
+						</table>
+						]
+	}
+}
 class BoS extends Component {
 
 	constructor(props) {
@@ -50,10 +75,75 @@ class BoS extends Component {
 		});
 	}
 
+	currentScore() {
+		let scores = Object.values(this.state.payoffs[this.state.epoch])
+		let AI_score = 0
+		let human_score = 0
+
+		scores.map((scorePair) => {
+			AI_score += scorePair[0]
+			human_score += scorePair[1]
+		})
+
+		console.log("payoffs", AI_score, human_score)
+
+		return <div className="col l8">
+			<div className="col l3">
+				<h4 className='center-align'>Riley = { AI_score } </h4>
+			</div>
+			<div className="col l2"></div>
+			<div className="col l3">
+				<h4 className='center-align'>You = { human_score } </h4>
+			</div>
+		</div>
+	}
+
+	winRatio() {
+		let scores = Object.values(this.state.payoffs[this.state.epoch])
+
+		let AI_score = 0
+		let human_score = 0
+
+		scores.map((scorePair) => {
+			AI_score += scorePair[0]
+			human_score += scorePair[1]
+		})
+
+		console.log("payoffs", AI_score, human_score)
+
+		return <div className="col l8">
+			<div className="col l3">
+				<h4 className='center-align'>Riley = { AI_score } </h4>
+			</div>
+			<div className="col l2"></div>
+			<div className="col l3">
+				<h4 className='center-align'>You = { human_score } </h4>
+			</div>
+		</div>
+	}
+
 	render() {
 		if (this.state.status == false) {
 			return(
-				<div>
+				<div className='container'>
+					<div className="row">
+						<div className="col l2"></div>
+						<div className="col l3 ">
+							<h4 className='center-align'>Game { this.state.epoch + 1 } / { this.state.numEpochs + 1 } </h4>
+						</div>
+						<div className="col l2"></div>
+						<div className="col l3">
+							<h4>Turn { this.state.turn  + 1 } / { this.state.numTurns + 1} </h4>
+						</div>
+						<div className="col l2"></div>
+					</div>
+					<div className="row">
+						<div className="col l2"></div>
+						{ 
+							this.currentScore()
+						}
+						<div className="col l2"></div>
+					</div>
 					<div className="row">
 						<table>
 							<tbody>
@@ -78,7 +168,7 @@ class BoS extends Component {
 					<div className="row">
 						<div className="col l4"></div>
 						<div className="col l2">
-							<button className='btn' type="submit" name="move" value="opera">Opera</button>
+							<button className='btn' type="submit" name="move" value="opera" onClick={ this.nice.bind(this, 1) }>Opera</button>
 						</div>
 						<div className="col l2">
 							<button className='btn' type="submit" name="move" value="game" onClick={ this.nice.bind(this, 0) } >Game</button>
