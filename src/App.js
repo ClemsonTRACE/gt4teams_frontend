@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import M from 'materialize-css';
-import { BrowserRouter as Router, Route, Link } from "react-router-dom";
+import { HashRouter as Router, Route, Link } from "react-router-dom";
 import PD from "./PrisonerDilemma";
 import BoS from "./BattleOfTheSexes";
 import Ultimatum from "./Ultimatum";
