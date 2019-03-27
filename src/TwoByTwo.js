@@ -216,8 +216,8 @@ class TwoByTwo extends Component {
 			let human_score = 0
 			let message = ""
 			payoffs.map((payoff) => {
-				AI_score += payoff[0]
-				human_score += payoff[1]
+				AI_score += payoff[1]
+				human_score += payoff[0]
 			})
 
 			if (AI_score > human_score) {
