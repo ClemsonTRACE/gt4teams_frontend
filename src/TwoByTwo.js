@@ -166,7 +166,7 @@ class TwoByTwo extends Component {
 		ob["move"] = move
 		let newOb = JSON.stringify(ob)
 
-		alert("wait for the scores to update")
+		alert("wait for the confirmation")
 
 		let self = this
 		let url = "https://gametheoryteams.herokuapp.com/games/twoByTwo/" + this.props.game + "/" + this.props.model 
@@ -174,6 +174,7 @@ class TwoByTwo extends Component {
 		axios.post(url, ob)
 		.then(function (response) {
 			console.log(response["data"])
+			alert("success")
 			self.setState(response["data"])
 		})
 		.catch(function (error) {
