@@ -166,6 +166,8 @@ class TwoByTwo extends Component {
 		ob["move"] = move
 		let newOb = JSON.stringify(ob)
 
+		alert("wait for the scores to update")
+
 		let self = this
 		let url = "https://gametheoryteams.herokuapp.com/games/twoByTwo/" + this.props.game + "/" + this.props.model 
 		// let url = "http://localhost:8000/games/twoByTwo/" + this.props.game + "/" + this.props.model 
@@ -176,6 +178,7 @@ class TwoByTwo extends Component {
 		})
 		.catch(function (error) {
 			console.log(error);
+			alert("error: try again or refresh")
 		});
 	}
 
