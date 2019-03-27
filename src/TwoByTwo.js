@@ -25,7 +25,8 @@ const config = {
 								</tr>
 							</tbody>
 						</table>
-						]	
+			],	
+		"explanation": "You and and the other player are trying to meet up at either the Opera or the Game, but can't communicate beforehand. You have to decide where you are going to go given where you expect the other player to go. You'd rather go to the Opera, and the other player prefers going to the Game, but you both would rather go to the same place than being alone at your preferred location"
 	},
 	"pd": {
 		"gameName": "Prisoners Dilemma",
@@ -49,7 +50,8 @@ const config = {
 							</tr>
 						</tbody>
 					</table>
-						]	
+			],
+		"explanation": "You and the other player committed a crime, and have been arrested by the police. The police does not have enough evidence to convict you both, so they are hoping to get a confession out of the both of you. If you and the other player Cooperate, then you each get a small sentence. If one of you Defects while the other Cooperates, then the defector walks away free and the cooperator gets a harsh sentence. If you both Defect, then you both get a harsh sentence."	
 	},
 	"hawkdove": {
 		"gameName": "Hawk Dove",
@@ -73,7 +75,8 @@ const config = {
 							</tr>
 						</tbody>
 					</table>
-						]	
+			],
+		"explanation": "You and the other player find yourself sharing the same environment. You each have a choice of attacking the other or remaning peaceful. Sucessful attacks gain the attacker new resources at the expense of the other. You both attacking results in mutual harm. Mutual peace keeps you at a steady state"	
 	}
 }
 class TwoByTwo extends Component {
@@ -89,9 +92,9 @@ class TwoByTwo extends Component {
 			"numTurns": 2,
 			"gameState": {},
 			"payoffs": {},
-			"epoch": 0,
+			"epoch": -1,
 			"turn": 0,
-			"surveyID": "",
+			"surveyID": Math.random().toString(36).replace(/[^a-z]+/g, '').substr(0, 8),
 		}
 
 		//generating the state dynamically
@@ -99,7 +102,6 @@ class TwoByTwo extends Component {
 			this.state["gameState"][x] = {}
 			this.state["payoffs"][x] = {}
 			for (let y = 0; y <= this.state.numTurns; y++) { 
-				console.log(this.state["gameState"])
 				this.state["gameState"][x][y] = [0, 0]
 				this.state["payoffs"][x][y] = [0, 0]
 			}	
@@ -108,7 +110,6 @@ class TwoByTwo extends Component {
 	}
 
 	componentDidMount() {
-		console.log("mounted")
 		M.AutoInit();
 	}
 
@@ -154,6 +155,7 @@ class TwoByTwo extends Component {
 	}
 
 	winRatio() {
+		console.log(this.state)
 		let epochs = Object.keys(this.state.payoffs)
 		let components = []
 		for (let epoch = 0; epoch < this.state.epoch; epoch++) {
@@ -180,53 +182,94 @@ class TwoByTwo extends Component {
 		return components
 	}
 
+	forward() {
+		this.setState({
+			"epoch": 0
+		})
+	}
+
 	render() {
 		this.winRatio()
 		if (this.state.status == false) {
-			return(
-				<div className='container'>
-					<div className="row">
-						<h2 className="center-align">{ config[this.props.game]["gameName"] }</h2>
+			if (this.state.epoch == -1) {
+				return(
+					<div className="container">
+						<h2>KEY INFORMATION ABOUT THE RESEARCH STUDY</h2>	
+						<p>
+							Voluntary Consent: Dr. Nathan McNeese, and Lorenzo Barberis Canonico are inviting you to take part in a research study. Dr. McNeese is a professor at Clemson University. Lorenzo is a graduate student at Clemson University, running this study with the help of Dr. McNeese. 
+							You may choose not to take part and you may choose to stop taking part at any time. You will not be punished in any way if you decide not to be in the study or to stop taking part in the study. If you choose to stop taking part in this study, the information you have already provided will be used in a confidential manner.
+							Alternative to Participation: Participation is voluntary and the only alternative is to not participate.
+							Study Purpose: The purpose of this research is to evaluate Human-Artificial Intelligence (AI) teamwork.
+							Activities and Procedures: Your part in the study will be to play a series of games with both human and AI players, and will take a survey at the end. 
+							Participation Time: It will take you around 20 minutes, at most 30, to be in this study.
+							Risks and Discomforts: We do not know of any risks or discomforts to you in this research study.
+							Possible Benefits: The study will enable you to interact with a variety of different types of AIs over a series of game theory scenarios. You will get to see and observe how different AIs play the game differently, and which kind you collaborate most well with. It will be a fun way to learn about and contribute to cutting-edge research about the role of AI and cognitive technology to improve human-AI teamwork teamwork. The results will give us insight into the Human-AI relationship when it comes to cooperation, teamwork, and decision-making.
+							INCENTIVES
+							Upon completion of the experiment, you will be awarded $1 through Amazon’s Mechanical Turk. Partial payment will not be offered. 
+							PROTECTION OF PRIVACY AND CONFIDENTIALITY
+							No identifiable data will be recorded, and every data collected will be anonymized. The information collected during the study will not be used or distributed for future research studies.
+							The results of this study may be published in scientific journals, professional publications, or educational presentations. 
+							Contact Information
+							If you have any questions or concerns about your rights in this research study, please contact the Clemson University Office of Research Compliance (ORC) at irb@clemson.edu. The Clemson IRB will not be able to answer some study-specific questions. However, you may contact the Clemson IRB if the research staff cannot be reached or if you wish to speak with someone other than the research staff.
+							If you have any study related questions or if any problems arise, please contact Lorenzo at Clemson University at lorenzb@g.clemson.edu.
+							Consent
+							By participating in the study, you indicate that you have read the information written above, are at least 18 years of age, been allowed to ask any questions, and are voluntarily choosing to take part in this research. You do not give up any legal rights by taking part in this research study.
+							A copy of this form will be given to you.
+						</p>
+						<button className="btn" onClick={ this.forward.bind(this) }>Agree & Proceed</button>
 					</div>
-					<div className="row">
-						{ this.winRatio() }
-					</div>
-					<div className="row">
-						<div className="col l2"></div>
-						<div className="col l3 ">
-							<h4 className='center-align'>Game { this.state.epoch + 1 } / { this.state.numEpochs + 1 } </h4>
+				)
+			} else {
+				return(
+					<div className='container'>
+						<div className="row">
+							<h2 className="center-align">{ config[this.props.game]["gameName"] }</h2>
+							<p> { config[this.props.game]["explanation"] } </p>
 						</div>
-						<div className="col l2"></div>
-						<div className="col l3">
-							<h4>Turn { this.state.turn  + 1 } / { this.state.numTurns + 1} </h4>
+						<div className="row">
+							{ this.winRatio() }
 						</div>
-						<div className="col l2"></div>
-					</div>
-					<div className="row">
-						<div className="col l2"></div>
-						{ 
-							this.currentScore()
-						}
-						<div className="col l2"></div>
-					</div>
-					<div className="row">
-						{ config[this.props.game]["table"] }
-					</div>
-					<div className="row">
-						<div className="col l4"></div>
-						<div className="col l2">
-							<button className='btn' type="submit" onClick={ this.nice.bind(this, 1) }> { config[this.props.game]["moves"][0] }</button>
+						<div className="row">
+							<div className="col l2"></div>
+							<div className="col l3 ">
+								<h4 className='center-align'>Game { this.state.epoch + 1 } / { this.state.numEpochs + 1 } </h4>
+							</div>
+							<div className="col l2"></div>
+							<div className="col l3">
+								<h4>Turn { this.state.turn  + 1 } / { this.state.numTurns + 1} </h4>
+							</div>
+							<div className="col l2"></div>
 						</div>
-						<div className="col l2">
-							<button className='btn' type="submit" onClick={ this.nice.bind(this, 0) } >{ config[this.props.game]["moves"][1] }</button>
+						<div className="row">
+							<div className="col l2"></div>
+							{ 
+								this.currentScore()
+							}
+							<div className="col l2"></div>
 						</div>
-						<div className="col l4"></div>
+						<div className="row">
+							{ config[this.props.game]["table"] }
+						</div>
+						<div className="row">
+							<div className="col l4"></div>
+							<div className="col l2">
+								<button className='btn' type="submit" onClick={ this.nice.bind(this, 1) }> { config[this.props.game]["moves"][0] }</button>
+							</div>
+							<div className="col l2">
+								<button className='btn' type="submit" onClick={ this.nice.bind(this, 0) } >{ config[this.props.game]["moves"][1] }</button>
+							</div>
+							<div className="col l4"></div>
+						</div>
 					</div>
-				</div>
-			)		
+				)	
+			}	
 		} else {
 			return(
-				<h1>Done</h1>
+				<div className="row">
+					<h2 className="center-align">One more thing!</h2>
+					<h4>Write down this code: You will need it to get paid! { this.state.surveyID } </h4>
+					<a href="https://clemson.ca1.qualtrics.com/jfe/form/SV_aeEAlqgU5iyW2a1">Go to the Survey</a>
+				</div>
 			)
 		}
 
