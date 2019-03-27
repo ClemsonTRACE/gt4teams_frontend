@@ -15,13 +15,29 @@ const config = {
 								</tr>
 								<tr>
 									<td>You go to the Opera</td>
-									<td>3, 2</td>
-									<td>1, 1</td>
+									<td>
+										<span className="blue-text">3</span>
+										,
+										<span className="teal-text">2</span>
+									</td>
+									<td>
+										<span className="blue-text">1</span>
+										, 
+										<span className="teal-text">1</span>
+									</td>
 								</tr>
 								<tr>
 									<td>You go to the Game</td>
-									<td>0, 0</td>
-									<td>2, 3</td>
+									<td>
+										<span className="blue-text">0</span>
+										,
+										<span className="teal-text">0</span>
+									</td>
+									<td>
+										<span className="blue-text">2</span>
+										, 
+										<span className="teal-text">3</span>
+									</td>
 								</tr>
 							</tbody>
 						</table>
@@ -40,13 +56,29 @@ const config = {
 							</tr>
 							<tr>
 								<td>You Cooperate</td>
-								<td>-1, -1</td>
-								<td>-3, 0</td>
+								<td>
+									<span className="blue-text">-1</span>
+									,
+									<span className="teal-text">-1</span>
+								</td>
+								<td>
+									<span className="blue-text">-3</span>
+									, 
+									<span className="teal-text">0</span>
+								</td>
 							</tr>
 							<tr>
 								<td>You Defect</td>
-								<td>0, -3</td>
-								<td>-2, -2</td>
+								<td>
+									<span className="blue-text">0</span>
+									, 
+									<span className="teal-text">-3</span>
+								</td>
+								<td>
+									<span className="blue-text">-2</span>
+									, 
+									<span className="teal-text">-2</span>
+								</td>
 							</tr>
 						</tbody>
 					</table>
@@ -65,13 +97,29 @@ const config = {
 							</tr>
 							<tr>
 								<td>You Attack</td>
-								<td>-2, -2</td>
-								<td>1, -1</td>
+								<td>
+									<span className="blue-text">-2</span>
+									,
+									<span className="teal-text">-2</span>
+								</td>
+								<td>
+									<span className="blue-text">1</span>
+									, 
+									<span className="teal-text">-1</span>
+								</td>
 							</tr>
 							<tr>
 								<td>You Stay Peaceful</td>
-								<td>-1, 1</td>
-								<td>0, 0</td>
+								<td>
+									<span className="blue-text">-1</span>
+									,
+									<span className="teal-text">1</span>
+								</td>
+								<td>
+									<span className="blue-text">0</span>
+									, 
+									<span className="teal-text">0</span>
+								</td>
 							</tr>
 						</tbody>
 					</table>
@@ -145,11 +193,11 @@ class TwoByTwo extends Component {
 
 		return <div className="col l8">
 			<div className="col l3">
-				<h4 className='center-align'>{ this.props.opponent } = { AI_score } </h4>
+				<h4 className='center-align blue-text'>You = { human_score } </h4>
 			</div>
 			<div className="col l2"></div>
 			<div className="col l3">
-				<h4 className='center-align'>You = { human_score } </h4>
+				<h4 className='center-align teal-text'>{ this.props.opponent } = { AI_score } </h4>
 			</div>
 		</div>
 	}
