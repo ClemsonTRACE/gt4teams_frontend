@@ -114,7 +114,8 @@ class TwoByTwo extends Component {
 		let newOb = JSON.stringify(ob)
 
 		let self = this
-		let url = "http://localhost:8000/games/twoByTwo/" + this.props.game + "/" + this.props.model 
+		let url = "https://gametheoryteams.herokuapp.com/games/twoByTwo/" + this.props.game + "/" + this.props.model 
+		// let url = "http://localhost:8000/games/twoByTwo/" + this.props.game + "/" + this.props.model 
 		axios.post(url, ob)
 		.then(function (response) {
 			console.log(response["data"])
