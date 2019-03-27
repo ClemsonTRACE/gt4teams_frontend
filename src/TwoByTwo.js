@@ -81,13 +81,17 @@ class TwoByTwo extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {
+			"game": this.props.game,
+			"opponent": this.props.opponent,
+			"model": this.props.model,
 			"status": false, 
 			"numEpochs": 2,
 			"numTurns": 2,
 			"gameState": {},
 			"payoffs": {},
 			"epoch": 0,
-			"turn": 0
+			"turn": 0,
+			"surveyID": "",
 		}
 
 		//generating the state dynamically
