@@ -169,8 +169,10 @@ class TwoByTwo extends Component {
 		alert("wait for the confirmation")
 
 		let self = this
-		let url = "https://gametheoryteams.herokuapp.com/games/twoByTwo/" + this.props.game + "/" + this.props.model 
+		// let url = "https://gametheoryteams.herokuapp.com/games/twoByTwo/" + this.props.game + "/" + this.props.model 
 		// let url = "http://localhost:8000/games/twoByTwo/" + this.props.game + "/" + this.props.model 
+		let url = "http://796f3793.ngrok.io/games/twoByTwo/" + this.props.game + "/" + this.props.model 
+
 		axios.post(url, ob)
 		.then(function (response) {
 			console.log(response["data"])
@@ -185,15 +187,16 @@ class TwoByTwo extends Component {
 
 	currentScore() {
 		let scores = Object.values(this.state.payoffs[this.state.epoch])
+		console.log(scores)
 		let AI_score = 0
 		let human_score = 0
 
 		scores.map((scorePair) => {
-			AI_score += scorePair[0]
-			human_score += scorePair[1]
+			AI_score += scorePair[1]
+			human_score += scorePair[0]
 		})
 
-		console.log("payoffs", AI_score, human_score)
+		console.log("payoffs", human_score, AI_score)
 
 		return <div className="col l8">
 			<div className="col l3">
@@ -207,7 +210,6 @@ class TwoByTwo extends Component {
 	}
 
 	winRatio() {
-		console.log(this.state)
 		let epochs = Object.keys(this.state.payoffs)
 		let components = []
 		for (let epoch = 0; epoch < this.state.epoch; epoch++) {
@@ -324,10 +326,10 @@ class TwoByTwo extends Component {
 						<div className="row">
 							<div className="col l4"></div>
 							<div className="col l2">
-								<button className='btn' type="submit" onClick={ this.nice.bind(this, 1) }> { config[this.props.game]["moves"][0] }</button>
+								<button className='btn' type="submit" onClick={ this.nice.bind(this, 0) }> { config[this.props.game]["moves"][0] }</button>
 							</div>
 							<div className="col l2">
-								<button className='btn' type="submit" onClick={ this.nice.bind(this, 0) } >{ config[this.props.game]["moves"][1] }</button>
+								<button className='btn' type="submit" onClick={ this.nice.bind(this, 1) } >{ config[this.props.game]["moves"][1] }</button>
 							</div>
 							<div className="col l4"></div>
 						</div>
