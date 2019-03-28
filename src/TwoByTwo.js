@@ -169,7 +169,7 @@ class TwoByTwo extends Component {
 		let self = this
 		// let url = "https://gametheoryteams.herokuapp.com/games/twoByTwo/" + this.props.game + "/" + this.props.model 
 		// let url = "http://localhost:8000/games/twoByTwo/" + this.props.game + "/" + this.props.model 
-		let url = "https://5732d996.ngrok.io/games/twoByTwo/" + this.props.game + "/" + this.props.model 
+		let url = "https://d99061d7.ngrok.io/games/twoByTwo/" + this.props.game + "/" + this.props.model 
 
 		axios.post(url, ob)
 		.then(function (response) {
