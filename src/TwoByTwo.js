@@ -340,7 +340,7 @@ class TwoByTwo extends Component {
 			return(
 				<div className="row">
 					<h2 className="center-align">One more thing!</h2>
-					<h4>Write down this code: You will need it to get paid! </h4>
+					<h4>Write down this code: You will need this for the survey! </h4>
 					<h4>{ this.state.surveyID } </h4>
 					<a href="https://clemson.ca1.qualtrics.com/jfe/form/SV_aeEAlqgU5iyW2a1">Go to the Survey</a>
 				</div>
