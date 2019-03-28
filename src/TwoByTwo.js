@@ -190,6 +190,7 @@ class TwoByTwo extends Component {
 		let human_score = 0
 
 		scores.map((scorePair) => {
+			console.log(scorePair)
 			AI_score += scorePair[1]
 			human_score += scorePair[0]
 		})
