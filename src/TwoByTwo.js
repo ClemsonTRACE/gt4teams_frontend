@@ -140,7 +140,7 @@ class TwoByTwo extends Component {
 			"numTurns": 9,
 			"gameState": {},
 			"payoffs": {},
-			"epoch": -1,
+			"epoch": -2,
 			"turn": 0,
 			"surveyID": Math.random().toString(36).replace(/[^a-z]+/g, '').substr(0, 8),
 		}
@@ -236,15 +236,17 @@ class TwoByTwo extends Component {
 	}
 
 	forward() {
+		let currentNum = this.state.epoch
+		let newNum = currentNum + 1
 		this.setState({
-			"epoch": 0
+			"epoch": newNum
 		})
 	}
 
 	render() {
 		this.winRatio()
 		if (this.state.status == false) {
-			if (this.state.epoch == -1) {
+			if (this.state.epoch == -2) {
 				return(
 					<div className="container">
 						<h2>KEY INFORMATION ABOUT THE RESEARCH STUDY</h2>	
@@ -289,6 +291,13 @@ class TwoByTwo extends Component {
 							By participating in the study, you indicate that you have read the information written above, are at least 18 years of age, been allowed to ask any questions, and are voluntarily choosing to take part in this research. You do not give up any legal rights by taking part in this research study.
 						</h5>
 						<button className="btn" onClick={ this.forward.bind(this) }>Agree & Proceed</button>
+					</div>
+				)
+			} else if (this.state.epoch == -1) {
+				return(
+					<div>
+						<h3>You are going to play against { this.state.opponent } </h3>
+						<button className="btn" onClick={ this.forward.bind(this) }>Start</button>
 					</div>
 				)
 			} else {
