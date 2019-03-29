@@ -161,6 +161,10 @@ class TwoByTwo extends Component {
 		M.AutoInit();
 	}
 
+	sleep(time) {
+		return new Promise((resolve) => setTimeout(resolve, time));
+	}
+
 	nice(move) {
 		let ob = this.state
 		ob["move"] = move
@@ -169,8 +173,11 @@ class TwoByTwo extends Component {
 		let self = this
 		// let url = "https://gametheoryteams.herokuapp.com/games/twoByTwo/" + this.props.game + "/" + this.props.model 
 		// let url = "http://localhost:8000/games/twoByTwo/" + this.props.game + "/" + this.props.model 
-		let url = "https://d99061d7.ngrok.io/games/twoByTwo/" + this.props.game + "/" + this.props.model 
+		let url = "https://lorenzo.pagekite.me/games/twoByTwo/" + this.props.game + "/" + this.props.model 
 
+		alert("wait to be notified")
+
+		// self.sleep(10000).then(() => {
 		axios.post(url, ob)
 		.then(function (response) {
 			console.log(response["data"])
@@ -179,8 +186,10 @@ class TwoByTwo extends Component {
 		})
 		.catch(function (error) {
 			console.log(error);
-			alert("error: try again or refresh")
-		});
+			alert("error: try again in 5 minutes or refresh")
+		});	
+		// })
+
 	}
 
 	currentScore() {
