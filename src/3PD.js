@@ -272,20 +272,26 @@ class Three_PD extends Component {
 				p2_score += payoff[2]
 			})
 
-			if (human_score > p1_score && human_score > p2_score) {
-
-			} else if (p1_score > p2_score && p1_score > human_score) {
-
-			} else if (p2_score > p1_score && p2_score > human_score) {
-
+			//I'm literally gonna check the values of the payoffs as opposed to making a complex conditioanl
+			if (payoffs.toString() == [7, 7, 7].toString()) {
+				message = <h5> All players won Game #{ Number(epoch) + 1} : { human_score} vs { p1_score } vs { p2_score }</h5>
+			} else if (payoffs.toString() == [3, 3, 9].toString()) {
+				message = <h5> Player 2 won Game #{ Number(epoch) + 1} : { human_score} vs { p1_score } vs { p2_score }</h5>
+			} else if (payoffs.toString() == [3, 9, 3].toString()) {
+				message = <h5> Player 1 won Game #{ Number(epoch) + 1} : { human_score} vs { p1_score } vs { p2_score }</h5>
+			} else if (payoffs.toString() == [0, 5, 5].toString()) {
+				message = <h5> You lost Game #{ Number(epoch) + 1} : { human_score} vs { p1_score } vs { p2_score }</h5>
+			} else if (payoffs.toString() == [9, 3, 3].toString()) {
+				message = <h5> You won Game #{ Number(epoch) + 1} : { human_score} vs { p1_score } vs { p2_score }</h5>
+			} else if (payoffs.toString() == [5, 0, 5].toString()) {
+				message = <h5> You and Player 2 successfully betrayed Player 1 in Game #{ Number(epoch) + 1} : { human_score} vs { p1_score } vs { p2_score }</h5>
+			} else if (payoffs.toString() == [5, 5, 0].toString()) {
+				message = <h5> You and Player 1 successfully betrayed Player 2 in Game #{ Number(epoch) + 1} : { human_score} vs { p1_score } vs { p2_score }</h5>
+			} else if (payoffs.toString() == [1, 1, 1].toString()) {
+				message = <h5> All players lost Game #{ Number(epoch) + 1} : { human_score} vs { p1_score } vs { p2_score }</h5>
+			} else {
+				message = <h5>Error</h5>
 			}
-			// if (AI_score > human_score) {
-			// 	message = <h5>{ this.props.opponent } won Game #{ Number(epoch) + 1} : { AI_score } vs { human_score }</h5>
-			// } else if (human_score > AI_score) {
-			// 	message = <h5>You won Game #{ Number(epoch) + 1}: { human_score } vs { AI_score }</h5>
-			// } else {
-			// 	message = <h5>Game #{ Number(epoch) + 1} ended in a Tie: { human_score } vs { AI_score }</h5>
-			// }
 
 			components.push(message)
 		}
