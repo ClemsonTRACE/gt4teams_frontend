@@ -1,0 +1,48 @@
+let's roll bro!!
+
+ok so the first thing is the session logger
+	I implemented a similar system for Neocities so I should probably start by checking out that pattern
+		https://github.com/ClemsonTRACE/neocitiesV2/blob/master/src/App.js
+	I need to clean up my GH badly ahah
+	ok so looking at the Neocities session logger
+		setInterval()
+			if training
+			else 
+				if not waiver
+					if global time < global session length
+						if user is player A
+							update time
+					else
+						final page
+		ugh I need to stop listneing to songs with lyrics
+			this MGMT remix is more like it
+		ok so back to this
+	the pattern should be very similar
+		I still set the interval and check the state location 
+			wait, don't I do this already?
+		see, gt4t is all about url routing
+			should I create an ad-hoc session logger just for 3pd?
+				probably, I mean I guess I'd be down to move the logic into the App component if needs change
+			uhm, and yet I need to add a new option of how many human players there are
+				Ima add that to the container componennt, although it's gonna break the priors
+				I'll just leave them a message to change the urls slightly 
+		the alternative option is to treat it as a separate game like centipede
+			that might be good actually
+			let's see, what do I have to pass down?
+			Yes!! It worked
+	uhm, wait so let's build the 3PD first otherwise I'll get confused
+		ok done with the url patterns
+		damn it, looks like I have to implement this as a tree
+			yeee, D3.js tree!
+			so close!!! 
+			hell yes!!! woot woot  
+		OMG yes, I was able to transfter all of this to the component so it works!!
+
+	currentScore was pretty easy
+	Win rate is gonna be harder
+		how many cases are there exactly?
+			let's look at the server
+				https://github.com/ClemsonTRACE/gameTheory4Teams/blob/master/games/utils.py
+			it's 8 cases
+		oh no!! the training was off 
+			jk: 0 is cooperate and 1 is defect
