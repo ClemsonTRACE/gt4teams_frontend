@@ -8,7 +8,7 @@ import Waiver from "./Waiver";
 const config = {
 	"gameName": "3 Player Prisoners Dilemma",
 	"moves": ["Cooperate", "Defect"],
-	"explanation": "You and the other players committed a crime, and have been arrested by the police. The police does not have enough evidence to convict you both, so they are hoping to get a confession out of the both of you. If you and the other player Cooperate, then you each get a small sentence. If one of you Defects while the other Cooperates, then the defector walks away free and the cooperator gets a harsh sentence. If you both Defect, then you both get a harsh sentence."	
+	"explanation": "You and the other players committed a crime, and have been arrested by the police. The police does not have enough evidence to convict all of you, so they are hoping to get a confession out of all of you. If you and the other players Cooperate, then you each get a small sentence. If one of you Defects while the others Cooperate, then the defector walks away free and the cooperators gets a harsh sentence. If all of you Defect, then all of you get a harsh sentence."	
 }
 
 let pd3_data = {

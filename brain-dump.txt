@@ -46,3 +46,4 @@ ok so the first thing is the session logger
 			it's 8 cases
 		oh no!! the training was off 
 			jk: 0 is cooperate and 1 is defect
+		boom! done
