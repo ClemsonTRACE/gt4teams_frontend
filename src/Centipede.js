@@ -3,10 +3,6 @@ import M from 'materialize-css';
 
 class Centipede extends Component {
 
-	constructor(props) {
-		super(props);
-	}
-
 	componentDidMount() {
 		M.AutoInit();
 	}

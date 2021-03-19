@@ -6,10 +6,6 @@ import * as d3 from "d3";
 
 class DecisionTree extends Component {
 
-	constructor(props) {
-		super(props);	
-	}
-
 	componentDidMount() {
 		this.drawChart();
 	}

@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
 import M from 'materialize-css';
 import axios from "axios";
+import firebase from './firebase.js';
 import DecisionTree from "./DecisionTree";
 import Waiver from "./Waiver";
-
+import Loader from "./Loader";
 
 const config = {
 	"gameName": "3 Player Prisoners Dilemma",
@@ -159,6 +160,8 @@ let pd3_data = {
   ]
 }
 
+let intervalID = ""
+
 class Three_PD extends Component {
 
 	constructor(props) {
@@ -172,9 +175,12 @@ class Three_PD extends Component {
 			"numTurns": 9,
 			"gameState": {},
 			"payoffs": {},
-			"epoch": -2,
+			"epoch": -1,
 			"turn": 0,
 			"surveyID": Math.random().toString(36).replace(/[^a-z]+/g, '').substr(0, 8),
+			"players_ready": false,
+			"ref": firebase.database().ref("/gt4t/"),
+			"sessionID": ""
 		}
 
 		//generating the state dynamically
@@ -273,21 +279,21 @@ class Three_PD extends Component {
 			})
 
 			//I'm literally gonna check the values of the payoffs as opposed to making a complex conditioanl
-			if (payoffs.toString() == [7, 7, 7].toString()) {
+			if (payoffs.toString() === [7, 7, 7].toString()) {
 				message = <h5> All players won Game #{ Number(epoch) + 1} : { human_score} vs { p1_score } vs { p2_score }</h5>
-			} else if (payoffs.toString() == [3, 3, 9].toString()) {
+			} else if (payoffs.toString() === [3, 3, 9].toString()) {
 				message = <h5> Player 2 won Game #{ Number(epoch) + 1} : { human_score} vs { p1_score } vs { p2_score }</h5>
-			} else if (payoffs.toString() == [3, 9, 3].toString()) {
+			} else if (payoffs.toString() === [3, 9, 3].toString()) {
 				message = <h5> Player 1 won Game #{ Number(epoch) + 1} : { human_score} vs { p1_score } vs { p2_score }</h5>
-			} else if (payoffs.toString() == [0, 5, 5].toString()) {
+			} else if (payoffs.toString() === [0, 5, 5].toString()) {
 				message = <h5> You lost Game #{ Number(epoch) + 1} : { human_score} vs { p1_score } vs { p2_score }</h5>
-			} else if (payoffs.toString() == [9, 3, 3].toString()) {
+			} else if (payoffs.toString() === [9, 3, 3].toString()) {
 				message = <h5> You won Game #{ Number(epoch) + 1} : { human_score} vs { p1_score } vs { p2_score }</h5>
-			} else if (payoffs.toString() == [5, 0, 5].toString()) {
+			} else if (payoffs.toString() === [5, 0, 5].toString()) {
 				message = <h5> You and Player 2 successfully betrayed Player 1 in Game #{ Number(epoch) + 1} : { human_score} vs { p1_score } vs { p2_score }</h5>
-			} else if (payoffs.toString() == [5, 5, 0].toString()) {
+			} else if (payoffs.toString() === [5, 5, 0].toString()) {
 				message = <h5> You and Player 1 successfully betrayed Player 2 in Game #{ Number(epoch) + 1} : { human_score} vs { p1_score } vs { p2_score }</h5>
-			} else if (payoffs.toString() == [1, 1, 1].toString()) {
+			} else if (payoffs.toString() === [1, 1, 1].toString()) {
 				message = <h5> All players lost Game #{ Number(epoch) + 1} : { human_score} vs { p1_score } vs { p2_score }</h5>
 			} else {
 				message = <h5>Error</h5>
@@ -307,23 +313,86 @@ class Three_PD extends Component {
 		})
 	}
 
+	checkPlayersStatus() {
+		//running this every 3 seconds to keep checking if the other players are online
+		intervalID = window.setInterval(() => {
+			let numOfHumans = (3 - this.props.numOfAIs)
+
+			if (this.state.sessionID == "") {
+			
+				this.state.ref.child(numOfHumans).once('value', (snapshot) => {
+					let items = snapshot.val();
+					let sessions = Object.values(items)
+					let session_keys = Object.keys(items)
+
+					let i = 0
+					while (i <= sessions.length - 1) {
+						// console.log(sessions[i])
+						let players_status = Object.values(sessions[i])
+						// console.log(players_status.indexOf(false))
+						if (players_status.indexOf(false) > - 1) {
+							let update = {}
+							let role = Object.keys(sessions[i])[players_status.indexOf(false)]
+							update[role] = true
+							this.state.ref.child(numOfHumans).child(session_keys[i]).update(update)
+							this.setState({
+								"sessionID": session_keys[i]
+							})
+							i = sessions.length
+						} else {
+							i++
+						}
+					}
+				})
+			} else {
+				this.state.ref.child(numOfHumans).child(this.state.sessionID).once("value", (snapshot) => {
+					// console.log("here", snapshot.val())
+					let players_status = Object.values(snapshot.val())
+					if (players_status.indexOf(false) < 0) {
+						this.setState({
+							"players_ready": true,
+						})
+					} else {
+						console.log("still waiting")
+					}
+				})
+			}
+		}, 3000)
+	}
+
+
 	render() {
 		this.winRatio()
-		if (this.state.status == false) {
-			if (this.state.epoch == -2) {
+		if (this.state.status === false) {
+			if (this.state.epoch === -2) {
 				return(
 					<div className="container">
 						<Waiver />
 						<button className="btn" onClick={ this.forward.bind(this) }>Agree & Proceed</button>
 					</div>
 				)
-			} else if (this.state.epoch == -1) {
-				return(
-					<div>
-						<h3>You are going to play against { this.state.opponent } </h3>
-						<button className="btn" onClick={ this.forward.bind(this) }>Start</button>
-					</div>
-				)
+			} else if (this.state.epoch === -1) {
+				if (this.state.players_ready) {
+					//clearing the timer so it doesn't keep looping
+					window.clearInterval(intervalID)
+					return(
+						<div>
+							<h3>You are going to play against { this.state.opponent } </h3>
+							<button className="btn" onClick={ this.forward.bind(this) }>Start</button>
+						</div>
+					)
+				} else {
+					//checking if the interval has already been set to avoid overloading the browser
+					if (intervalID === "") {
+						this.checkPlayersStatus()
+					}
+					return(
+						<div>
+							<h3>Wait until the other players show up</h3>
+							<Loader />
+						</div>
+					)
+				}
 			} else {
 				return(
 					<div className='container'>

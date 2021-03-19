@@ -5,7 +5,6 @@ import TwoByTwo from "./TwoByTwo";
 import Ultimatum from "./Ultimatum";
 import Centipede from "./Centipede";
 import Three_PD from "./3PD";
-import DecisionTree from "./DecisionTree";
 
 class App extends Component {
 
@@ -27,7 +26,7 @@ class App extends Component {
       options.map((option) => {
         models.map((model) => {
           let url = "/" + game + "/" + option + "/" + model
-          let opponent = (option == "human") ? "Riley" : "AI"
+          let opponent = (option === "human") ? "Riley" : "AI"
           let component = <Route path={ url } component={ () => <TwoByTwo game={ game } opponent={ opponent } model={ model } /> } />
           paths.push(component)
         })
@@ -38,7 +37,7 @@ class App extends Component {
     numOfAIs.map((option) => {
       models.map((model) => {
         let url = "/3pd/" + option + "/" + model
-        let component = <Route path={ url } component={ () => <Three_PD model={ model } /> } />
+        let component = <Route path={ url } component={ () => <Three_PD model={ model } numOfAIs={ option } /> } />
         paths.push(component)
       })
     })

@@ -47,3 +47,53 @@ ok so the first thing is the session logger
 		oh no!! the training was off 
 			jk: 0 is cooperate and 1 is defect
 		boom! done
+
+let's do this!!!!
+	ok so session loggin
+	I guess this should happen in the intermediate step between signing the privacy form and actually seeing the game
+		I can add a loader to the intermediate page
+			why isn't it showing up? 
+			uhm, what version of bootstrap am I using?
+			ohhh, I"m using materialize
+		now I have to make a function to check availability on firebase
+			let's pull up again the line from the Neocities code
+				https://github.com/ClemsonTRACE/neocitiesV2/blob/master/src/App.js
+			ok so instead of making it an infite time loop, I should make it a while loop
+				if possible
+	what should this look like?
+		sessionID {
+			playerA: false,
+			playerB: false,
+			playerC: false,
+		}
+
+		this makes sense, except we don't really care about specific sessions like we did for Neocities
+			or do we? after all, we have all human, 1 human, and 2 humans
+			a way of doing that is by checking if "false" in sessionID{}, not caring about number
+				yea, bc I want to avoid having to do individual url for each thing
+			oh wait, I can already check the condition through the url
+
+	the thing is, I am trying to make this as fast as possible
+		the users should automatically go to the first session where they'd be getting started
+		ok but then if there are no sessions like that, they should open up a new one
+			evidenced by a new child on Firebase
+
+	yea, I mean on some level this will be pretty easy bc all of this Firebase stuff is contained within that particular stage of the app
+
+	so ideally I'd loop through the right child based on the url, looking for falses
+		when I find one, I turn it true
+		the loop continues to check false is not in that child
+			when it's all true, the button will show up
+			there has to be a state update in there
+		solved by just doing "once" on Firebase
+
+	ok so I have the right read on Firebase and the right loop
+		now it's just a matter of checking and then updating correctly
+		ok so everything is ready, I just have to ensure check() happens repeatly 
+			soooo close
+		ok come on, you are so close!
+
+
+
+
+
