@@ -93,6 +93,8 @@ let's do this!!!!
 			soooo close
 		ok come on, you are so close!
 
+	what if put the check() in the Loader, and do a loop there? 
+
 
 
 
