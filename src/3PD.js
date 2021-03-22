@@ -179,8 +179,9 @@ class Three_PD extends Component {
 			"turn": 0,
 			"surveyID": Math.random().toString(36).replace(/[^a-z]+/g, '').substr(0, 8),
 			"players_ready": false,
+			"player_id": "",
 			"ref": firebase.database().ref("/gt4t/"),
-			"sessionID": ""
+			"sessionID": "",
 		}
 
 		//generating the state dynamically
@@ -197,56 +198,127 @@ class Three_PD extends Component {
 
 	componentDidMount() {
 		M.AutoInit();
+
 	}
 
 	sleep(time) {
 		return new Promise((resolve) => setTimeout(resolve, time));
 	}
 
-	nice(move) {
-		let ob = this.state
-		ob["move"] = move
-		let newOb = JSON.stringify(ob)
+	arrayToObject(arr) {
+		let res = {};
+		for (let i = 0; i < arr.length; i++) {
+			res[i] = {}
+			for (let j = 0; j < arr[i].length; j++) {
+				res[i][j] = arr[i][j]
+				// Object.assign(res[i][j], arr[i][j])
+			}
+		};
+		return res;
+	};
+
+	checkSession(ob) {
+		console.log("listener fired")
+
+		let numOfHumans = (3 - this.props.numOfAIs)
+		let game_path = "game_" + this.state.epoch + "/turn_" + this.state.turn
 
 		let self = this
+
+		let newOb = this.state
+
 		// let url = "https://gametheoryteams.herokuapp.com/games/twoByTwo/" + this.props.game + "/" + this.props.model 
 		// let url = "http://localhost:8000/games/twoByTwo/" + this.props.game + "/" + this.props.model 
-		let url = "https://lorenzo.pagekite.me/games/twoByTwo/" + this.props.game + "/" + this.props.model 
+		// let url = "https://lorenzo.pagekite.me/games/twoByTwo/" + this.props.game + "/" + this.props.model 
+		let url = "http://localhost:8000/games/" + this.props.game + "/" + this.props.model 
 
-		alert("wait to be notified")
+		this.state.ref
+			.child(numOfHumans)
+			.child(this.state.sessionID)
+			.child("games/" + game_path)
+			.child("moves")
+			.get().then((snapshot) => {
+				newOb["moves"] = snapshot.val()
+				let allMovesSubmitted = Object.values(snapshot.val()).indexOf(false)
+				if (allMovesSubmitted > -1) {
+					self.setState({
+						"players_ready": false
+					})
+				} else {
+					console.log("all moves submitted")
+					this.state.ref
+						.child(numOfHumans)
+						.child(this.state.sessionID)
+						.child("games/" + game_path)
+						.child("outcome")
+						.get().then((snapshot) => {
+							let outcomeStatus = snapshot.val()
+							if (outcomeStatus === false) {
+								if (self.state.player_id === "A") {
+									axios.post(url, newOb)
+										.then((response) => {
+											alert("success")
+											response["data"]["players_ready"] = true
+											let update = {}
+											update["outcome"] = response["data"]
+											this.state.ref
+												.child(numOfHumans)
+												.child(this.state.sessionID)
+												.child("games/" + game_path)
+												.update(update)
+										})
+										.catch((error) => {
+											console.log(error);
+											alert("error: try again in 5 minutes or refresh")
+										});	
+								}	
+							} else {
+								let newStateToPropagate = snapshot.val()
+								//for some reason when I get the json from firebase it converts gameState and payoffs into arrays of arrays so I'm coverting them back into objects
+								newStateToPropagate["gameState"] = self.arrayToObject(newStateToPropagate["gameState"])
+								newStateToPropagate["payoffs"] = self.arrayToObject(newStateToPropagate["payoffs"])
+								//player A sends the state so we don't want to accidentally convert all players to player A
+								delete newStateToPropagate.player_id
+								//not converting the firebase ref to a string which messes up the listeners
+								delete newStateToPropagate.ref
+								newStateToPropagate["player_id"] = this.state.player_id
+								self.setState(newStateToPropagate)
+							}
+						})
+					
+				}
+			})	
+	}
 
-		// self.sleep(10000).then(() => {
-		axios.post(url, ob)
-		.then(function (response) {
-			console.log(response["data"])
-			alert("success")
-			self.setState(response["data"])
-		})
-		.catch(function (error) {
-			console.log(error);
-			alert("error: try again in 5 minutes or refresh")
-		});	
-		// })
-
+	nice(move) {
+		let numOfHumans = (3 - this.props.numOfAIs)
+		let game_path = "game_" + this.state.epoch + "/turn_" + this.state.turn + "/moves"
+		let update = {}
+		update[this.state.player_id] = move
+		this.state.ref
+			.child(numOfHumans)
+			.child(this.state.sessionID)
+			.child("games/" + game_path)
+			.update(update)
 	}
 
 	currentScore() {
 		let scores = Object.values(this.state.payoffs[this.state.epoch])
-		console.log(scores)
+		// console.log(scores)
 		// let AI_score = 0
 		let human_score = 0
 		let p1_score = 0
 		let p2_score = 0
 
 		scores.map((scorePair) => {
-			console.log(scorePair)
+			// console.log(scorePair)
 			// AI_score += scorePair[1]
 			human_score += scorePair[0]
 			p1_score += scorePair[1]
 			p2_score += scorePair[2]
 		})
 
-		console.log("payoffs", human_score, p1_score, p2_score)
+		// console.log("payoffs", human_score, p1_score, p2_score)
 
 		return <div className="col l8">
 			<div className="col l3">
@@ -328,15 +400,16 @@ class Three_PD extends Component {
 					let i = 0
 					while (i <= sessions.length - 1) {
 						// console.log(sessions[i])
-						let players_status = Object.values(sessions[i])
+						let players_status = Object.values(sessions[i].player_status)
 						// console.log(players_status.indexOf(false))
 						if (players_status.indexOf(false) > - 1) {
 							let update = {}
-							let role = Object.keys(sessions[i])[players_status.indexOf(false)]
+							let role = Object.keys(sessions[i].player_status)[players_status.indexOf(false)]
 							update[role] = true
-							this.state.ref.child(numOfHumans).child(session_keys[i]).update(update)
+							this.state.ref.child(numOfHumans).child(session_keys[i]).child("player_status").update(update)
 							this.setState({
-								"sessionID": session_keys[i]
+								"sessionID": session_keys[i],
+								"player_id": role,
 							})
 							i = sessions.length
 						} else {
@@ -345,13 +418,21 @@ class Three_PD extends Component {
 					}
 				})
 			} else {
-				this.state.ref.child(numOfHumans).child(this.state.sessionID).once("value", (snapshot) => {
+				let self = this
+				this.state.ref.child(numOfHumans).child(this.state.sessionID).child("player_status").once("value", (snapshot) => {
 					// console.log("here", snapshot.val())
 					let players_status = Object.values(snapshot.val())
 					if (players_status.indexOf(false) < 0) {
 						this.setState({
 							"players_ready": true,
 						})
+
+						this.state.ref
+							.child(numOfHumans)
+							.child(this.state.sessionID)
+							.on("child_changed", (snapshot) => {
+								self.checkSession(snapshot.val())
+							})	
 					} else {
 						console.log("still waiting")
 					}
@@ -377,7 +458,7 @@ class Three_PD extends Component {
 					window.clearInterval(intervalID)
 					return(
 						<div>
-							<h3>You are going to play against { this.state.opponent } </h3>
+							<h3>You are going to play against { this.props.numOfAIs } AIs and { 2 - this.props.numOfAIs } other humans</h3>
 							<button className="btn" onClick={ this.forward.bind(this) }>Start</button>
 						</div>
 					)
@@ -394,48 +475,57 @@ class Three_PD extends Component {
 					)
 				}
 			} else {
-				return(
-					<div className='container'>
-						<div className="row">
-							<h2 className="center-align">{ config["gameName"] }</h2>
-							<p> { config["explanation"] } </p>
-						</div>
-						<div className="row">
-							{ this.winRatio() }
-						</div>
-						<div className="row">
-							<div className="col l2"></div>
-							<div className="col l3 ">
-								<h4 className='center-align'>Game { this.state.epoch + 1 } / { this.state.numEpochs + 1 } </h4>
+				if (this.state.players_ready) {
+					return(
+						<div className='container'>
+							<div className="row">
+								<h2 className="center-align">{ config["gameName"] }</h2>
+								<p> { config["explanation"] } </p>
 							</div>
-							<div className="col l2"></div>
-							<div className="col l3">
-								<h4>Turn { this.state.turn  + 1 } / { this.state.numTurns + 1} </h4>
+							<div className="row">
+								{ this.winRatio() }
 							</div>
-							<div className="col l2"></div>
-						</div>
-						<div className="row">
-							<div className="col l2"></div>
-							{ 
-								this.currentScore()
-							}
-							<div className="col l2"></div>
-						</div>
-						<div className="row">
-							<DecisionTree data={ pd3_data } width={ 954 } />
-						</div>
-						<div className="row">
-							<div className="col l4"></div>
-							<div className="col l2">
-								<button className='btn' type="submit" onClick={ this.nice.bind(this, 0) }> { config["moves"][0] }</button>
+							<div className="row">
+								<div className="col l2"></div>
+								<div className="col l3 ">
+									<h4 className='center-align'>Game { this.state.epoch + 1 } / { this.state.numEpochs + 1 } </h4>
+								</div>
+								<div className="col l2"></div>
+								<div className="col l3">
+									<h4>Turn { this.state.turn  + 1 } / { this.state.numTurns + 1} </h4>
+								</div>
+								<div className="col l2"></div>
 							</div>
-							<div className="col l2">
-								<button className='btn' type="submit" onClick={ this.nice.bind(this, 1) } >{ config["moves"][1] }</button>
+							<div className="row">
+								<div className="col l2"></div>
+								{ 
+									this.currentScore()
+								}
+								<div className="col l2"></div>
 							</div>
-							<div className="col l4"></div>
+							<div className="row">
+								<DecisionTree data={ pd3_data } width={ 954 } />
+							</div>
+							<div className="row">
+								<div className="col l4"></div>
+								<div className="col l2">
+									<button className='btn' type="submit" onClick={ this.nice.bind(this, 0) }> { config["moves"][0] }</button>
+								</div>
+								<div className="col l2">
+									<button className='btn' type="submit" onClick={ this.nice.bind(this, 1) } >{ config["moves"][1] }</button>
+								</div>
+								<div className="col l4"></div>
+							</div>
 						</div>
-					</div>
-				)	
+					)
+				} else {
+					return(
+						<div>
+							<h3>Waiting for other players to move</h3>
+							<Loader />
+						</div>
+					)
+				}
 			}	
 		} else {
 			return(
@@ -443,7 +533,7 @@ class Three_PD extends Component {
 					<h2 className="center-align">One more thing!</h2>
 					<h4>Write down this code: You will need this for the survey! </h4>
 					<h4>{ this.state.surveyID } </h4>
-					<a href="https://clemson.ca1.qualtrics.com/jfe/form/SV_aeEAlqgU5iyW2a1">Go to the Survey</a>
+					<a href="https://clemson.ca1.qualtrics.com/jfe/form/SV_bdTag4IaZSMWRHo">Go to the Survey</a>
 				</div>
 			)
 		}

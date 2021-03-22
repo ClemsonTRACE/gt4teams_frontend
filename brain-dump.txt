@@ -95,7 +95,47 @@ let's do this!!!!
 
 	what if put the check() in the Loader, and do a loop there? 
 
+1 human 2AIs works!
 
+now let's figure out 2 humans-vs-1-AI
+	both humans are sending requests to the server
+	what if I have the server listen to firebase changes with the pyrebase library?
+	nah, sounds like I need to use firebase and then just have 1 player submit the answers
+		ok but then how would the frontend know not to expect and answer?
+			it could be reading it from a child that gets updated from player A
+		ok yea so that's the answer
+
+	ok so first things first, I need to push the moves to firebase
+		ok, done
+
+	actually, regardless of the playerID I should be listening for changes
+		when the playerID is A then I sent it to the server
+
+ok, let's wrap up this session logger
+	let's see, where am I?
+		I'm updating the moves child
+	now I should have player A listen for the moves to be not false
+		then it pushes to the server
+			there I have to check the number of agents needed
+		uhm, this appears to be harder than I thought
+			should I just set up a listener? 
+			I guess I could do that in componentDidMount
+			let's try that
+		ok so this seems to be working, now I just have to keep the logic straightforward
+			the issue might arise depending on how many players there are, but I can put everything into firebase tbh
+			yea, that should make it more straightforward as opposed to using the session logger for more than 1 human conditions
+				this is nice bc ideally I'd be able to support more players 
+		the key is to ensure that the axios post request is received properly
+			at a basic level, I need to loop through some number before instnataitng the agents
+				this is nice bc then if the number of agents is 0, I am easily saving everything
+
+	let's integrate front-end with backend
+		gotta add the moves to the request
+		nice!!!
+
+	now I have to switch modes back properly
+		the key is to update some "outcome" child and then update the state accordingly
+		interesting so it's when I get the new state from firebase that gameState and Pyaoffs are converted inot arrays for some rason
 
 
 

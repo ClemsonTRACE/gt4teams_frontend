@@ -37,7 +37,7 @@ class App extends Component {
     numOfAIs.map((option) => {
       models.map((model) => {
         let url = "/3pd/" + option + "/" + model
-        let component = <Route path={ url } component={ () => <Three_PD model={ model } numOfAIs={ option } /> } />
+        let component = <Route path={ url } component={ () => <Three_PD game={"3pd"} model={ model } numOfAIs={ option } /> } />
         paths.push(component)
       })
     })
