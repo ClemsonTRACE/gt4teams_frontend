@@ -227,10 +227,8 @@ class Three_PD extends Component {
 
 		let newOb = this.state
 
-		// let url = "https://gametheoryteams.herokuapp.com/games/twoByTwo/" + this.props.game + "/" + this.props.model 
-		// let url = "http://localhost:8000/games/twoByTwo/" + this.props.game + "/" + this.props.model 
-		// let url = "https://lorenzo.pagekite.me/games/twoByTwo/" + this.props.game + "/" + this.props.model 
-		let url = "http://localhost:8000/games/" + this.props.game + "/" + this.props.model 
+		let url = "http://24.213.115.249:8000/games/" + this.props.game + "/" + this.props.model 
+		// let url = "http://localhost:8000/games/" + this.props.game + "/" + this.props.model 
 
 		this.state.ref
 			.child(numOfHumans)
