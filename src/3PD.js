@@ -198,7 +198,9 @@ class Three_PD extends Component {
 
 	componentDidMount() {
 		M.AutoInit();
-
+		console.log("opponent", this.props. opponent)
+		console.log("model", this.props.model)
+		console.log("game", this.props.game)
 	}
 
 	sleep(time) {
