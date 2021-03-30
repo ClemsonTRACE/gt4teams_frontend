@@ -260,8 +260,9 @@ class Three_PD extends Component {
 							let outcomeStatus = snapshot.val()
 							if (outcomeStatus === false) {
 								if (self.state.player_id === "A") {
-									const headers = { 'Content-Type': 'application/x-www-form-urlencoded', 'Access-Control-Allow-Origin': '*' }
-									axios.post(url, newOb, {"headers": headers})
+									// const headers = { 'Content-Type': 'application/x-www-form-urlencoded', 'Access-Control-Allow-Origin': '*' }
+									// {"headers": headers}
+									axios.post(url, newOb)
 										.then((response) => {
 											alert("success")
 											response["data"]["players_ready"] = true
