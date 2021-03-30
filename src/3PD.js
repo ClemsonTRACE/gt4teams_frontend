@@ -242,7 +242,7 @@ class Three_PD extends Component {
 				newOb["moves"] = snapshot.val()
 				let allMovesSubmitted = Object.values(snapshot.val()).indexOf(false)
 				if (allMovesSubmitted > -1) {
-					if (snapshot.val()[player_id] === false) {
+					if (snapshot.val()[this.state.player_id] === false) {
 						console.log("the other player has submitted a move")
 					} else {
 						self.setState({
