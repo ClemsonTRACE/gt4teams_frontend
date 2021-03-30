@@ -242,9 +242,13 @@ class Three_PD extends Component {
 				newOb["moves"] = snapshot.val()
 				let allMovesSubmitted = Object.values(snapshot.val()).indexOf(false)
 				if (allMovesSubmitted > -1) {
-					self.setState({
-						"players_ready": false
-					})
+					if (snapshot.val()[player_id] === false) {
+						console.log("the other player has submitted a move")
+					} else {
+						self.setState({
+							"players_ready": false
+						})
+					}
 				} else {
 					console.log("all moves submitted")
 					this.state.ref
@@ -256,7 +260,8 @@ class Three_PD extends Component {
 							let outcomeStatus = snapshot.val()
 							if (outcomeStatus === false) {
 								if (self.state.player_id === "A") {
-									axios.post(url, newOb)
+									const headers = { 'Content-Type': 'application/x-www-form-urlencoded', 'Access-Control-Allow-Origin': '*' }
+									axios.post(url, newOb, {"headers": headers})
 										.then((response) => {
 											alert("success")
 											response["data"]["players_ready"] = true
