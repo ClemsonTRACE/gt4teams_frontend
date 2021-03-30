@@ -1,7 +1,7 @@
 self.__precacheManifest = [
   {
-    "revision": "c82f0aed57ef42acc50d",
-    "url": "/gt4teams_frontend/static/js/main.f7949564.chunk.js"
+    "revision": "09882ebe0ed8c0c22e45",
+    "url": "/gt4teams_frontend/static/js/main.62183d3f.chunk.js"
   },
   {
     "revision": "062643e1af8ecfc1e8fe",
@@ -12,7 +12,7 @@ self.__precacheManifest = [
     "url": "/gt4teams_frontend/static/js/2.3c547ca1.chunk.js"
   },
   {
-    "revision": "bfb898bd42c2ea0e8e205953be9c40d6",
+    "revision": "42717eb558e2e6a665b30a9b0d3f1651",
     "url": "/gt4teams_frontend/index.html"
   }
 ];
