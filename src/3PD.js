@@ -229,7 +229,8 @@ class Three_PD extends Component {
 
 		let newOb = this.state
 
-		let url = "https://24.213.115.249:8000/games/" + this.props.game + "/" + this.props.model 
+		let url = "https://tracelab.pagekite.me/games/" + this.props.game + "/" + this.props.model
+		// let url = "https://24.213.115.249:8000/games/" + this.props.game + "/" + this.props.model 
 		// let url = "http://localhost:8000/games/" + this.props.game + "/" + this.props.model 
 
 		this.state.ref
