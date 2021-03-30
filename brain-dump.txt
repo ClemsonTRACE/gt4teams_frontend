@@ -138,5 +138,5 @@ ok, let's wrap up this session logger
 		interesting so it's when I get the new state from firebase that gameState and Pyaoffs are converted inot arrays for some rason
 
 ok let's fix the issue where player A loses touch with the moves interface if player B submits first
-
+	check if their own move has been submitted
 

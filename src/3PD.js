@@ -229,9 +229,9 @@ class Three_PD extends Component {
 
 		let newOb = this.state
 
-		let url = "https://tracelab.pagekite.me/games/" + this.props.game + "/" + this.props.model
+		// let url = "https://tracelab.pagekite.me/games/" + this.props.game + "/" + this.props.model
 		// let url = "https://24.213.115.249:8000/games/" + this.props.game + "/" + this.props.model 
-		// let url = "http://localhost:8000/games/" + this.props.game + "/" + this.props.model 
+		let url = "http://localhost:8000/games/" + this.props.game + "/" + this.props.model 
 
 		this.state.ref
 			.child(numOfHumans)
@@ -375,7 +375,7 @@ class Three_PD extends Component {
 			} else if (payoffs.toString() === [1, 1, 1].toString()) {
 				message = <h5> All players lost Game #{ Number(epoch) + 1} : { human_score} vs { p1_score } vs { p2_score }</h5>
 			} else {
-				message = <h5>Error</h5>
+				message = <h5>Next round</h5>
 			}
 
 			components.push(message)
