@@ -264,7 +264,7 @@ class Three_PD extends Component {
 									// {"headers": headers}
 									axios.post(url, newOb)
 										.then((response) => {
-											alert("success")
+											alert("response logged \n press ok")
 											response["data"]["players_ready"] = true
 											let update = {}
 											update["outcome"] = response["data"]
