@@ -450,6 +450,28 @@ class Three_PD extends Component {
 		}, 3000)
 	}
 
+	dropPlayers() {
+		let numOfHumans = (3 - this.props.numOfAIs)
+		//first check if someone never showed up
+		this.state.ref
+			.child(numOfHumans)
+			.child(this.state.sessionID)
+			.child("player_status")
+			.once("value", (snapshot) => {
+				console.log(snapshot.val())
+				let roles = Object.keys(snapshot.val())
+				let allPlayersShowedUp = Object.values(snapshot.val()).indexOf(false)
+				if (allPlayersShowedUp > -1) {
+					let update = {}
+					update[roles[allPlayersShowedUp]] = "dropped"
+					this.state.ref
+						.child(numOfHumans)
+						.child(this.state.sessionID)
+						.child("player_status")
+						.update(update)
+				}
+			})
+	}
 
 	render() {
 		let timeElapsed = (this.state.intervalLength / 1800) * 100
@@ -547,6 +569,7 @@ class Three_PD extends Component {
 				}
 			}	
 		} else {
+			this.dropPlayers()
 			return(
 				<div className="row">
 					<h2 className="center-align">One more thing!</h2>
