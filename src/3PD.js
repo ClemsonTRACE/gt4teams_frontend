@@ -312,35 +312,45 @@ class Three_PD extends Component {
 		let scores = Object.values(this.state.payoffs[this.state.epoch])
 		// console.log(scores)
 		// let AI_score = 0
-		let human_score = 0
-		let p1_score = 0
-		let p2_score = 0
+
+		// let human_score = 0
+		// let p1_score = 0
+		// let p2_score = 0
+
+		let scoreOb = {}
+		scoreOb["A"] = 0
+		scoreOb["B"] = 0
+		scoreOb["C"] = 0
 
 		scores.map((scorePair) => {
 			// console.log(scorePair)
 			// AI_score += scorePair[1]
-			let roles = ["A", "B", "C"]
-			let score_indices = [0, 1, 2]
 
-			human_score += scorePair[roles.indexOf(this.state.player_id)]
+			scoreOb["A"] += scorePair[0]
+			scoreOb["B"] += scorePair[1]
+			scoreOb["C"] += scorePair[2]
+
+			// human_score += scorePair[roles.indexOf(this.state.player_id)]
 			// human_score += scorePair[0]
-			roles.splice(roles.indexOf(this.state.player_id), 1)
-			p1_score += scorePair[roles.indexOf(roles[0])]
-			p2_score += scorePair[roles.indexOf(roles[1])]
+			// roles.splice(roles.indexOf(this.state.player_id), 1)
+			// p1_score += scorePair[roles.indexOf(roles[0])]
+			// p2_score += scorePair[roles.indexOf(roles[1])]
 		})
 
 		// console.log("payoffs", human_score, p1_score, p2_score)
+		let roles = ["A", "B", "C"]
+		roles.splice(roles.indexOf(this.state.player_id), 1)
 
 		return <div className="col l8">
 			<div className="col l3">
-				<h4 className='center-align blue-text'>You = { human_score } </h4>
+				<h4 className='center-align blue-text'>You = { scoreOb[this.state.player_id] } </h4>
 			</div>
 			<div className="col l2"></div>
 			<div className="col l3">
-				<h4 className='center-align teal-text'>Player 1 = { p1_score } </h4>
+				<h4 className='center-align teal-text'>Player { roles[0] } = { scoreOb[roles[0]] } </h4>
 			</div>
 			<div className="col l3">
-				<h4 className='center-align brown-text'>Player 2 = { p2_score } </h4>
+				<h4 className='center-align brown-text'>Player { roles[1] } = { scoreOb[roles[1]] } </h4>
 			</div>
 		</div>
 	}
@@ -350,43 +360,52 @@ class Three_PD extends Component {
 		let components = []
 		for (let epoch = 0; epoch < this.state.epoch; epoch++) {
 			let payoffs = Object.values(this.state.payoffs[epoch])
-			let human_score = 0
-			let p1_score = 0
-			let p2_score = 0
+			// let human_score = 0
+			// let p1_score = 0
+			// let p2_score = 0
 			let message = ""
+
+			let scoreOb = {}
+			scoreOb["A"] = 0
+			scoreOb["B"] = 0
+			scoreOb["C"] = 0
 
 			payoffs.map((payoff) => {
 				// human_score += payoff[0]
 				// p1_score += payoff[1]
 				// p2_score += payoff[2]
 
-				let roles = ["A", "B", "C"]
-				let score_indices = [0, 1, 2]
+				// let roles = ["A", "B", "C"]
+				// let score_indices = [0, 1, 2]
 
-				human_score += payoff[roles.indexOf(this.state.player_id)]
-				// human_score += scorePair[0]
-				roles.splice(roles.indexOf(this.state.player_id), 1)
-				p1_score += payoff[roles.indexOf(roles[0])]
-				p2_score += payoff[roles.indexOf(roles[1])]
+				// human_score += payoff[roles.indexOf(this.state.player_id)]
+				// // human_score += scorePair[0]
+				// roles.splice(roles.indexOf(this.state.player_id), 1)
+				// p1_score += payoff[roles.indexOf(roles[0])]
+				// p2_score += payoff[roles.indexOf(roles[1])]
+
+				scoreOb["A"] += payoff[0]
+				scoreOb["B"] += payoff[1]
+				scoreOb["C"] += payoff[2]
 			})
 
 			//I'm literally gonna check the values of the payoffs as opposed to making a complex conditioanl
 			if (payoffs.toString() === [7, 7, 7].toString()) {
-				message = <h5> All players won Game #{ Number(epoch) + 1} : { human_score} vs { p1_score } vs { p2_score }</h5>
+				message = <h5> All players won Game #{ Number(epoch) + 1} : { scoreOb["A"] } vs { scoreOb["B"] } vs { scoreOb["C"] }</h5>
 			} else if (payoffs.toString() === [3, 3, 9].toString()) {
-				message = <h5> Player 2 won Game #{ Number(epoch) + 1} : { human_score} vs { p1_score } vs { p2_score }</h5>
+				message = <h5> Player C won Game #{ Number(epoch) + 1} : { scoreOb["A"] } vs { scoreOb["B"] } vs { scoreOb["C"] }</h5>
 			} else if (payoffs.toString() === [3, 9, 3].toString()) {
-				message = <h5> Player 1 won Game #{ Number(epoch) + 1} : { human_score} vs { p1_score } vs { p2_score }</h5>
+				message = <h5> Player B won Game #{ Number(epoch) + 1} : { scoreOb["A"] } vs { scoreOb["B"] } vs { scoreOb["C"] }</h5>
 			} else if (payoffs.toString() === [0, 5, 5].toString()) {
-				message = <h5> You lost Game #{ Number(epoch) + 1} : { human_score} vs { p1_score } vs { p2_score }</h5>
+				message = <h5> Player A lost Game #{ Number(epoch) + 1} : { scoreOb["A"] } vs { scoreOb["B"] } vs { scoreOb["C"] }</h5>
 			} else if (payoffs.toString() === [9, 3, 3].toString()) {
-				message = <h5> You won Game #{ Number(epoch) + 1} : { human_score} vs { p1_score } vs { p2_score }</h5>
+				message = <h5> Player A won Game #{ Number(epoch) + 1} : { scoreOb["A"] } vs { scoreOb["B"] } vs { scoreOb["C"] }</h5>
 			} else if (payoffs.toString() === [5, 0, 5].toString()) {
-				message = <h5> You and Player 2 successfully betrayed Player 1 in Game #{ Number(epoch) + 1} : { human_score} vs { p1_score } vs { p2_score }</h5>
+				message = <h5> Player A and Player C successfully betrayed Player 1 in Game #{ Number(epoch) + 1} : { scoreOb["A"] } vs { scoreOb["B"] } vs { scoreOb["C"] }</h5>
 			} else if (payoffs.toString() === [5, 5, 0].toString()) {
-				message = <h5> You and Player 1 successfully betrayed Player 2 in Game #{ Number(epoch) + 1} : { human_score} vs { p1_score } vs { p2_score }</h5>
+				message = <h5> Player A and Player B successfully betrayed Player 2 in Game #{ Number(epoch) + 1} : { scoreOb["A"] } vs { scoreOb["B"] } vs { scoreOb["C"] }</h5>
 			} else if (payoffs.toString() === [1, 1, 1].toString()) {
-				message = <h5> All players lost Game #{ Number(epoch) + 1} : { human_score} vs { p1_score } vs { p2_score }</h5>
+				message = <h5> All players lost Game #{ Number(epoch) + 1} : { scoreOb["A"] } vs { scoreOb["B"] } vs { scoreOb["C"] }</h5>
 			} else {
 				message = <h5>Next round</h5>
 			}
