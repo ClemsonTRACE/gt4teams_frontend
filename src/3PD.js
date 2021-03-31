@@ -457,10 +457,10 @@ class Three_PD extends Component {
 				if (this.state.players_ready) {
 					//clearing the timer so it doesn't keep looping
 					window.clearInterval(intervalID)
+					this.forward()
 					return(
 						<div>
 							<h3>You are going to play against { this.props.numOfAIs } AIs and { 2 - this.props.numOfAIs } other humans</h3>
-							<button className="btn" onClick={ this.forward.bind(this) }>Start</button>
 						</div>
 					)
 				} else {
