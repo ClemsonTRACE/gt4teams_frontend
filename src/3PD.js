@@ -182,6 +182,7 @@ class Three_PD extends Component {
 			"player_id": "",
 			"ref": firebase.database().ref("/gt4t/"),
 			"sessionID": "",
+			"intervalLength": 0
 		}
 
 		//generating the state dynamically
@@ -247,7 +248,8 @@ class Three_PD extends Component {
 						console.log("the other player has submitted a move")
 					} else {
 						self.setState({
-							"players_ready": false
+							"players_ready": false,
+							"intervalLength": this.state.intervalLength + 3
 						})
 					}
 				} else {
@@ -281,6 +283,7 @@ class Three_PD extends Component {
 								delete newStateToPropagate.player_id
 								//not converting the firebase ref to a string which messes up the listeners
 								delete newStateToPropagate.ref
+								newStateToPropagate["intervalLength"] = 0
 								newStateToPropagate["player_id"] = this.state.player_id
 								self.setState(newStateToPropagate)
 							}
@@ -426,6 +429,7 @@ class Three_PD extends Component {
 					if (players_status.indexOf(false) < 0) {
 						this.setState({
 							"players_ready": true,
+							"intervalLength": 0
 						})
 
 						this.state.ref
@@ -435,17 +439,22 @@ class Three_PD extends Component {
 								self.checkSession(snapshot.val())
 							})	
 					} else {
-						console.log("still waiting")
+						console.log("still waiting", this.state.intervalLength)
+						this.setState({
+							"intervalLength": this.state.intervalLength + 3
+						})
 					}
 				})
 			}
+
 		}, 3000)
 	}
 
 
 	render() {
+		let timeElapsed = (this.state.intervalLength / 1800) * 100
 		this.winRatio()
-		if (this.state.status === false) {
+		if (this.state.status === false && !(timeElapsed > 100)) {
 			if (this.state.epoch === -2) {
 				return(
 					<div className="container">
@@ -464,6 +473,7 @@ class Three_PD extends Component {
 						</div>
 					)
 				} else {
+
 					//checking if the interval has already been set to avoid overloading the browser
 					if (intervalID === "") {
 						this.checkPlayersStatus()
@@ -472,6 +482,10 @@ class Three_PD extends Component {
 						<div>
 							<h3>Wait until the other players show up</h3>
 							<Loader />
+							<h4>If no one other players show up in the next 30m, you will get paid anyway</h4>
+							<div className="progress">
+								<div className="determinate" style={{width: timeElapsed + "%"}}></div>
+							</div>
 						</div>
 					)
 				}
@@ -524,6 +538,10 @@ class Three_PD extends Component {
 						<div>
 							<h3>Waiting for other players to move</h3>
 							<Loader />
+							<h4>If the other players drop out or fail to move show up in the next 30m, you will get paid anyway</h4>
+							<div className="progress">
+								<div className="determinate" style={{width: timeElapsed + "%"}}></div>
+							</div>
 						</div>
 					)
 				}
