@@ -363,11 +363,11 @@ class Three_PD extends Component {
 				let roles = ["A", "B", "C"]
 				let score_indices = [0, 1, 2]
 
-				human_score += scorePair[roles.indexOf(this.state.player_id)]
+				human_score += payoff[roles.indexOf(this.state.player_id)]
 				// human_score += scorePair[0]
 				roles.splice(roles.indexOf(this.state.player_id), 1)
-				p1_score += scorePair[roles.indexOf(roles[0])]
-				p2_score += scorePair[roles.indexOf(roles[1])]
+				p1_score += payoff[roles.indexOf(roles[0])]
+				p2_score += payoff[roles.indexOf(roles[1])]
 			})
 
 			//I'm literally gonna check the values of the payoffs as opposed to making a complex conditioanl
