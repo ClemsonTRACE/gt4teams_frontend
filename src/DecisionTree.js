@@ -10,6 +10,10 @@ class DecisionTree extends Component {
 		this.drawChart();
 	}
 
+	componentWillUnmount() {
+		d3.select("body svg").remove()
+	}
+
 	tree(data) {
 		let root = d3.hierarchy(data);
 		root.dx = 10;
