@@ -406,7 +406,7 @@ class Three_PD extends Component {
 						if (players_status.indexOf(false) > - 1) {
 							let update = {}
 							let role = Object.keys(sessions[i].player_status)[players_status.indexOf(false)]
-							update[role] = true
+							update[role] = this.state.surveyID
 							this.state.ref.child(numOfHumans).child(session_keys[i]).child("player_status").update(update)
 							this.setState({
 								"sessionID": session_keys[i],
