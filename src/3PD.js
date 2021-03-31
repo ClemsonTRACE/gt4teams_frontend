@@ -240,6 +240,7 @@ class Three_PD extends Component {
 			.child("moves")
 			.get().then((snapshot) => {
 				newOb["moves"] = snapshot.val()
+				newOb["numHumans"] = numOfHumans
 				let allMovesSubmitted = Object.values(snapshot.val()).indexOf(false)
 				if (allMovesSubmitted > -1) {
 					if (snapshot.val()[this.state.player_id] === false) {
@@ -265,14 +266,6 @@ class Three_PD extends Component {
 									axios.post(url, newOb)
 										.then((response) => {
 											alert("response logged \n press ok")
-											response["data"]["players_ready"] = true
-											let update = {}
-											update["outcome"] = response["data"]
-											this.state.ref
-												.child(numOfHumans)
-												.child(this.state.sessionID)
-												.child("games/" + game_path)
-												.update(update)
 										})
 										.catch((error) => {
 											console.log(error);
@@ -541,7 +534,7 @@ class Three_PD extends Component {
 					<h2 className="center-align">One more thing!</h2>
 					<h4>Write down this code: You will need this for the survey! </h4>
 					<h4>{ this.state.surveyID } </h4>
-					<a href="https://clemson.ca1.qualtrics.com/jfe/form/SV_bdTag4IaZSMWRHo">Go to the Survey</a>
+					<a href="https://clemson.ca1.qualtrics.com/jfe/form/SV_bdTag4IaZSMWRHo" target="_blank">Go to the Survey</a>
 				</div>
 			)
 		}
