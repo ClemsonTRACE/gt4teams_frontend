@@ -285,7 +285,7 @@ class Three_PD extends Component {
 								delete newStateToPropagate.ref
 								//delte the surveyID so it preservers uniqueness
 								delete newStateToPropagate.surveyID
-								
+
 								newStateToPropagate["intervalLength"] = 0
 								newStateToPropagate["player_id"] = this.state.player_id
 								self.setState(newStateToPropagate)
@@ -319,9 +319,14 @@ class Three_PD extends Component {
 		scores.map((scorePair) => {
 			// console.log(scorePair)
 			// AI_score += scorePair[1]
-			human_score += scorePair[0]
-			p1_score += scorePair[1]
-			p2_score += scorePair[2]
+			let roles = ["A", "B", "C"]
+			let score_indices = [0, 1, 2]
+
+			human_score += scorePair[roles.indexOf(this.state.player_id)]
+			// human_score += scorePair[0]
+			roles.splice(roles.indexOf(this.state.player_id), 1)
+			p1_score += scorePair[roles.indexOf(roles[0])]
+			p2_score += scorePair[roles.indexOf(roles[1])]
 		})
 
 		// console.log("payoffs", human_score, p1_score, p2_score)
@@ -351,9 +356,18 @@ class Three_PD extends Component {
 			let message = ""
 
 			payoffs.map((payoff) => {
-				human_score += payoff[0]
-				p1_score += payoff[1]
-				p2_score += payoff[2]
+				// human_score += payoff[0]
+				// p1_score += payoff[1]
+				// p2_score += payoff[2]
+
+				let roles = ["A", "B", "C"]
+				let score_indices = [0, 1, 2]
+
+				human_score += scorePair[roles.indexOf(this.state.player_id)]
+				// human_score += scorePair[0]
+				roles.splice(roles.indexOf(this.state.player_id), 1)
+				p1_score += scorePair[roles.indexOf(roles[0])]
+				p2_score += scorePair[roles.indexOf(roles[1])]
 			})
 
 			//I'm literally gonna check the values of the payoffs as opposed to making a complex conditioanl
