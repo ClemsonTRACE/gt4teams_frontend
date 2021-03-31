@@ -283,6 +283,9 @@ class Three_PD extends Component {
 								delete newStateToPropagate.player_id
 								//not converting the firebase ref to a string which messes up the listeners
 								delete newStateToPropagate.ref
+								//delte the surveyID so it preservers uniqueness
+								delete newStateToPropagate.surveyID
+								
 								newStateToPropagate["intervalLength"] = 0
 								newStateToPropagate["player_id"] = this.state.player_id
 								self.setState(newStateToPropagate)
