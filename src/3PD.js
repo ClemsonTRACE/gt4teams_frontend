@@ -177,7 +177,7 @@ class Three_PD extends Component {
 			"payoffs": {},
 			"epoch": -1,
 			"turn": 0,
-			"surveyID": Math.random().toString(36).replace(/[^a-z]+/g, '').substr(0, 8),
+			"surveyID": Math.random().toString(36).replace(/[^a-z]+/g, '').substr(0, 8) + "_" + (3 - this.props.numOfAIs),
 			"players_ready": false,
 			"player_id": "",
 			"ref": firebase.database().ref("/gt4t/"),
@@ -347,10 +347,10 @@ class Three_PD extends Component {
 			</div>
 			<div className="col l2"></div>
 			<div className="col l3">
-				<h4 className='center-align teal-text'>Player { roles[0] } = { scoreOb[roles[0]] } </h4>
+				<h4 className='center-align teal-text'>Player { roles[0] } ({ this.props.numOfAIs > 1 ? "AI" : "human"}) = { scoreOb[roles[0]] } </h4>
 			</div>
 			<div className="col l3">
-				<h4 className='center-align brown-text'>Player { roles[1] } = { scoreOb[roles[1]] } </h4>
+				<h4 className='center-align brown-text'>Player { roles[1] } ({ this.props.numOfAIs > 0 ? "AI" : "human"}) = { scoreOb[roles[1]] } </h4>
 			</div>
 		</div>
 	}
