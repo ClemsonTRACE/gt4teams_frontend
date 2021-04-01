@@ -13,72 +13,72 @@ const config = {
 }
 
 let pd3_data = {
-  "name": "you",
+  "name": "Player A",
   "children": [
     {
-      "name": "you cooperate",
+      "name": "Player A cooperate",
       "children": [
         {
-          "name": "Player 1 cooperates",
+          "name": "Player B cooperates",
           "children": [
             {
-              "name": "Player 2 cooperates",
+              "name": "Player C cooperates",
               "children": [
                 {
-                  "name": "You: +7"
+                  "name": "Player A: +7"
                 },
                 {
-                  "name": "Player 1: +7"
+                  "name": "Player B: +7"
                 },
                 {
-                  "name": "Player 2: +7"
+                  "name": "Player C: +7"
                 }
               ]
             },
             {
-              "name": "Player 2 defects",
+              "name": "Player C defects",
               "children": [
                 {
-                  "name": "You: +3"
+                  "name": "Player A: +3"
                 },
                 {
-                  "name": "Player 1: +3"
+                  "name": "Player B: +3"
                 },
                 {
-                  "name": "Player 2: +9"
+                  "name": "Player C: +9"
                 }
               ]
             } 
           ]
         },
         {
-          "name": "Player 1 defects",
+          "name": "Player B defects",
           "children": [
             {
-              "name": "Player 2 cooperates",
+              "name": "Player C cooperates",
               "children": [
                 {
-                  "name": "You: +3"
+                  "name": "Player A: +3"
                 },
                 {
-                  "name": "Player 1: +9"
+                  "name": "Player B: +9"
                 },
                 {
-                  "name": "Player 2: +3"
+                  "name": "Player C: +3"
                 }
               ]
             },
             {
-              "name": "Player 2 defects",
+              "name": "Player C defects",
               "children": [
                 {
-                  "name": "You: +0"
+                  "name": "Player A: +0"
                 },
                 {
-                  "name": "Player 1: +5"
+                  "name": "Player B: +5"
                 },
                 {
-                  "name": "Player 2: +5"
+                  "name": "Player C: +5"
                 }
               ]
             } 
@@ -87,69 +87,69 @@ let pd3_data = {
       ]
     },
     {
-      "name": "you defect",
+      "name": "Player A defect",
       "children": [
         {
-          "name": "Player 1 cooperates",
+          "name": "Player B cooperates",
           "children": [
             {
-              "name": "Player 2 cooperates",
+              "name": "Player C cooperates",
               "children": [
                 {
-                  "name": "You: +9"
+                  "name": "Player A: +9"
                 },
                 {
-                  "name": "Player 1: +3"
+                  "name": "Player B: +3"
                 },
                 {
-                  "name": "Player 2: +3"
+                  "name": "Player C: +3"
                 }
               ]
             },
             {
-              "name": "Player 2 defects",
+              "name": "Player C defects",
               "children": [
                 {
-                  "name": "You: +5"
+                  "name": "Player A: +5"
                 },
                 {
-                  "name": "Player 1: +0"
+                  "name": "Player B: +0"
                 },
                 {
-                  "name": "Player 2: +5"
+                  "name": "Player C: +5"
                 }
               ]
             } 
           ]
         },
         {
-          "name": "Player 1 defects",
+          "name": "Player B defects",
           "children": [
             {
-              "name": "Player 2 cooperates",
+              "name": "Player C cooperates",
               "children": [
                 {
-                  "name": "You: +5"
+                  "name": "Player A: +5"
                 },
                 {
-                  "name": "Player 1: +5"
+                  "name": "Player B: +5"
                 },
                 {
-                  "name": "Player 2: +0"
+                  "name": "Player C: +0"
                 }
               ]
             },
             {
-              "name": "Player 2 defects",
+              "name": "Player C defects",
               "children": [
                 {
-                  "name": "You: +1"
+                  "name": "Player A: +1"
                 },
                 {
-                  "name": "Player 1: +1"
+                  "name": "Player B: +1"
                 },
                 {
-                  "name": "Player 2: +1"
+                  "name": "Player C: +1"
                 }
               ]
             } 
@@ -343,7 +343,7 @@ class Three_PD extends Component {
 
 		return <div className="col l8">
 			<div className="col l3">
-				<h4 className='center-align blue-text'>You = { scoreOb[this.state.player_id] } </h4>
+				<h4 className='center-align blue-text'>You (Player { this.state.player_id}) = { scoreOb[this.state.player_id] } </h4>
 			</div>
 			<div className="col l2"></div>
 			<div className="col l3">
@@ -401,9 +401,9 @@ class Three_PD extends Component {
 			} else if (payoffs.toString() === [9, 3, 3].toString()) {
 				message = <h5> Player A won Game #{ Number(epoch) + 1} : { scoreOb["A"] } vs { scoreOb["B"] } vs { scoreOb["C"] }</h5>
 			} else if (payoffs.toString() === [5, 0, 5].toString()) {
-				message = <h5> Player A and Player C successfully betrayed Player 1 in Game #{ Number(epoch) + 1} : { scoreOb["A"] } vs { scoreOb["B"] } vs { scoreOb["C"] }</h5>
+				message = <h5> Player A and Player C successfully betrayed Player B in Game #{ Number(epoch) + 1} : { scoreOb["A"] } vs { scoreOb["B"] } vs { scoreOb["C"] }</h5>
 			} else if (payoffs.toString() === [5, 5, 0].toString()) {
-				message = <h5> Player A and Player B successfully betrayed Player 2 in Game #{ Number(epoch) + 1} : { scoreOb["A"] } vs { scoreOb["B"] } vs { scoreOb["C"] }</h5>
+				message = <h5> Player A and Player B successfully betrayed Player C in Game #{ Number(epoch) + 1} : { scoreOb["A"] } vs { scoreOb["B"] } vs { scoreOb["C"] }</h5>
 			} else if (payoffs.toString() === [1, 1, 1].toString()) {
 				message = <h5> All players lost Game #{ Number(epoch) + 1} : { scoreOb["A"] } vs { scoreOb["B"] } vs { scoreOb["C"] }</h5>
 			} else {
